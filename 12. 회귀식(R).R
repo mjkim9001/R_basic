@@ -51,3 +51,30 @@ cbind(data_new$speed, fitted(out2))
 data = read.csv("salary_data.csv")
 data
 out = lm(Salary~Experience+score, data=data)
+
+out = lm(rating~.-critical, data = attitude)
+summary(out)
+backward = step(out, direction = "backward", trace=FALSE)
+summary(backward)
+
+both = step(out, direction = "both", trace = FALSE)
+summary(both)
+
+install.packages("leaps")
+library(leaps)
+leaps = regsubsets(rating~., data = attitude, nbest=5)
+summary(leaps)
+plot(leaps)
+plot(leaps, scale= "bic")
+plot(leaps, scale="adjr2")
+plot(leaps, scale = "Cp")
+
+out_bic=glm(rating~complaints, data = attitude)
+summary(out_bic)
+
+summary.out = summary(leaps)
+which.max(summary.out$adjr2)
+summary.out$which[11,]
+
+out3 = lm(rating~complaints+learning+advance, data = attitude)
+summary(out3)
