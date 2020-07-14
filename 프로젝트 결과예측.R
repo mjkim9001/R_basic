@@ -21,20 +21,19 @@ data.test <- obj.view#[index==2,]
 
 
 
-
 obj.view <- subset(data1, select = select.column)
-m <- lm(QTY ~MAXTEMP, data = obj.view)
+m <- lm(QTY ~., data = obj.view)
 m2 <- step(m , direction = "both")
 m2
 summary(m2)
 
 obj.view <- subset(data1, select = select.column)
-data.test <- obj.view#[index==2,]
-drops <- c('MAXTEMP')
-data.test.temp <- data.test[,!(names(data.test) %in% drops)]
-result <- predict(m2, newdata = data.test.temp)
-data.test$pred <- result
-predict <- subset(data.test, select = c(MAXTEMP , pred))
+data.test1 <- obj.view#[index==2,]
+drops <- c('QTY')
+data.test1.temp <- data.test1[,!(names(data.test1) %in% drops)]
+result <- predict(m2, newdata = data.test1.temp)
+data.test1$pred <- result
+predict <- subset(data.test1, select = c(QTY , pred))
 predict$YM <- data1$YM
 
 View(predict)
